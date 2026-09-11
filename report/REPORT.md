@@ -105,13 +105,15 @@ Nguồn evidence: `segmentation_predictions.json` và `visuals/segmentation_pred
 | Phân loại ảnh | 1 nhãn cấp ảnh (`class_id`, `class_name` thuộc taxonomy ImageNet-1K). | Ảnh có nhiều chủ thể (ví dụ vừa có taxi, bus, người); mô hình nhầm lẫn ngữ cảnh (đoán chảo/nồi thành `gong`) hoặc tự tin sai (overconfident). | Đọc kỹ guideline về quy tắc chọn chủ thể chính (vật thể to nhất, ở trung tâm/foreground); gán đúng 1 nhãn đại diện; gắn cờ escalate nếu ảnh mơ hồ. | Kiểm tra xem nhãn được gán có đúng với chủ thể chính theo guideline không; rà soát các trường hợp ảnh có nhiều đối tượng hoặc bối cảnh phức tạp. |
 | Phát hiện vật thể | Danh sách các bounding box pixel dạng `xyxy = [x_min, y_min, x_max, y_max]` kèm `class_id`, `class_name`. | Bỏ sót vật thể nhỏ/khuất khi threshold cao; sinh ra dự đoán rác/nhiễu khi threshold thấp (ví dụ nhận nhầm bàn tay thành người); box bị lỏng hoặc cắt lẹm. | Tìm và vẽ box khít sát (tight box) cả 4 cạnh cho từng đối tượng thuộc danh mục lớp; xử lý đối tượng bị che khuất hoặc cắt mép theo đúng guideline. | Soi từng bounding box xem có bỏ sót vật thể không (Recall), có box rác không (Precision), box có bao khít sát không (IoU), và nhãn lớp có chính xác không. |
 | Instance segmentation | Tập hợp tọa độ các đỉnh đa giác `polygon_xy` (hoặc binary mask pixel) kèm `instance_id` và `class_id`, `class_name`. | Mặt nạ bị lem sang vùng nền (background leakage), cắt lẹm chi tiết mảnh (ngón tay, quai tạp dề); khó xác định ranh giới giữa các vật thể tiếp xúc hoặc chồng lấn. | Dùng công cụ vẽ đa giác (polygon) ôm khít sát đường viền pixel thực tế của từng cá thể riêng biệt; tách biệt bằng `instance_id`; loại bỏ bóng đổ. | Phóng to (zoom) kiểm tra chất lượng đường viền mask ở cấp độ pixel; kiểm tra mask có bị lấn nền, mất chi tiết hay dính chùm các cá thể gần nhau không; yêu cầu rework nếu cẩu thả. |
-
+ 
 ## 5. An toàn dữ liệu
 
 - Một quy tắc bảo vệ dữ liệu:
     - Tuyệt đối không sao chép, tải về máy cá nhân trái phép hoặc phát tán hình ảnh, dữ liệu huấn luyện nội bộ ra bên ngoài; không đưa bất kỳ thông tin định danh cá nhân nào (PII như họ tên, MSSV, CCCD, số điện thoại, email) vào báo cáo, code hoặc tập dữ liệu công khai; tuân thủ đầy đủ điều khoản bản quyền và giấy phép của dữ liệu (License).
 - Nếu thấy ảnh hoặc dữ liệu không đúng phạm vi, tôi sẽ dừng và báo cho:
     - Giảng viên hướng dẫn / Team Lead / Quản lý dự án (Project Manager / Data Security Officer) để được hướng dẫn xử lý và thu hồi dữ liệu không phù hợp theo đúng quy trình.
+
+
 
 ## 6. Danh sách bằng chứng
 
